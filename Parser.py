@@ -30,10 +30,23 @@ class Parser:
         return data_list
 
     def is_a_instruction(self, line):
+        # is A instruction
         if "@" in line:
-            return True
+            return "0"
+        # is C or L instruction
         else:
+            return "1"
+
+    def is_c_or_l_instruction(self, line):
+        # is L instruction
+        if "(" in line:
             return False
+        # is C instruction
+        else:
+            return True
+
+    def return_binary_value(self, number):
+        return "{0:b}".format(number)
 
     def print_data(self):
         data_list = self.read_data()
