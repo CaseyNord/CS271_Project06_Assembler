@@ -16,6 +16,8 @@
 # if the instruction is of format @value it is an A-instruction starting with 0
 # if the instruction is of format dest=comp;jump it is a C-instruction starting with 1
 
+import re
+
 
 class Parser:
 
@@ -23,32 +25,43 @@ class Parser:
         self.file = filename
 
     def read_data(self):
+        """Return data from input as list."""
         file_object = open(self.file, 'r')
         data_list = []
         for line in file_object:
             data_list.append(line)
         return data_list
 
-    def is_a_instruction(self, line):
-        # is A instruction
-        if "@" in line:
-            return "0"
-        # is C or L instruction
-        else:
-            return "1"
+    def clean_data(self):
+        """Return list of data with whitespace and comments removed."""
+        input_data = self.read_data()
+        clean_data = []
+        for line in input_data:
+            if not re.match(r'[/\n]', line[0]):
+                clean_data.append(line.strip())
+        return clean_data
 
-    def is_c_or_l_instruction(self, line):
-        # is L instruction
-        if "(" in line:
-            return False
-        # is C instruction
-        else:
-            return True
+    def normalize_data(self):
+        """Return list of normalized data ready for assembly."""
+        clean_data = self.clean_data()
+        normalized_data = []
+        for line in clean_data:
+            if "@" not in line:
+                if "=" not in line:
+                    line = "null=" + line
+                if ";" not in line:
+                    line = line + ";null"
+            normalized_data.append(line)
+        return normalized_data
 
-    def return_binary_value(self, number):
-        return "{0:b}".format(number)
-
-    def print_data(self):
-        data_list = self.read_data()
-        for line in data_list:
-            print(line, end='')
+    def print_data(self, flag):
+        """prints parser data"""
+        print_list = []
+        if flag == "d":
+            print_list = self.read_data()
+        if flag == "c":
+            print_list = self.clean_data()
+        if flag == "n":
+            print_list = self.normalize_data()
+        for line in print_list:
+            print(line)
