@@ -38,7 +38,8 @@ class Parser:
         clean_data = []
         for line in input_data:
             if not re.match(r'[/\n]', line[0]):
-                clean_data.append(line.strip())
+                stripped_line = line.strip()
+                clean_data.append(stripped_line.split(' ', 1)[0])
         return clean_data
 
     def normalize_data(self):
@@ -46,7 +47,7 @@ class Parser:
         clean_data = self.clean_data()
         normalized_data = []
         for line in clean_data:
-            if "@" not in line:
+            if not re.match(r'[@|(]', line[0]):
                 if "=" not in line:
                     line = "null=" + line
                 if ";" not in line:
