@@ -7,7 +7,7 @@ from Assembler import Assembler
 
 def main():
 
-    input_file = 'Max.asm'
+    input_file = 'Add.asm'
 
     # initiate parser
     arg_parser = argparse.ArgumentParser()
